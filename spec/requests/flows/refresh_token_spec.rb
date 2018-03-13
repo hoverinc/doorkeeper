@@ -41,6 +41,7 @@ describe 'Refresh Token Flow' do
         :access_token,
         application: @client,
         resource_owner_id: 1,
+        resource_owner_type: 'User',
         use_refresh_token: true
       )
     end
@@ -134,6 +135,7 @@ describe 'Refresh Token Flow' do
         :access_token,
         application: @client,
         resource_owner_id: @resource_owner.id,
+        resource_owner_type: @resource_owner.class.name,
         use_refresh_token: true
       )
       @token.update_attribute :expires_in, -100
@@ -166,9 +168,7 @@ describe 'Refresh Token Flow' do
     end
 
     def last_token
-      Doorkeeper::AccessToken.last_authorized_token_for(
-        @client.id, @resource_owner.id
-      )
+      Doorkeeper::AccessToken.last_authorized_token_for(@client.id, @resource_owner)
     end
   end
 end

@@ -8,6 +8,17 @@ module Doorkeeper
     include Models::Accessible
     include Models::Orderable
     include Models::Scopes
+    
+    RESOURCE_OWNER_STRUCT = Struct.new(:id, :class)
+    RESOURCE_OWNER_CLASS_STRUCT = Struct.new(:name)
+    
+    def resource_owner
+      RESOURCE_OWNER_STRUCT.new(resource_owner_id, RESOURCE_OWNER_CLASS_STRUCT.new(resource_owner_type))
+    end
+    def resource_owner=(value)
+      self.resource_owner_id = value.id
+      self.resource_owner_type = value.class.name
+    end
 
     # never uses pkce, if pkce migrations were not generated
     def uses_pkce?

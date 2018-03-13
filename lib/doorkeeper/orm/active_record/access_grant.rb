@@ -16,7 +16,7 @@ module Doorkeeper
 
     belongs_to :application, belongs_to_options
 
-    validates :resource_owner_id, :application_id, :token, :expires_in, :redirect_uri, presence: true
+    validates :resource_owner_id, :resource_owner_type, :application_id, :token, :expires_in, :redirect_uri, presence: true
     validates :token, uniqueness: true
 
     before_validation :generate_token, on: :create

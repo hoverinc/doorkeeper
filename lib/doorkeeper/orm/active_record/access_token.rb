@@ -37,7 +37,7 @@ module Doorkeeper
     #   active Access Tokens for Resource Owner
     #
     def self.active_for(resource_owner)
-      where(resource_owner_id: resource_owner.id, revoked_at: nil)
+      where(resource_owner_id: resource_owner.try(:id), resource_owner_type: resource_owner.try(:class).try(:name), revoked_at: nil)
     end
 
     def self.refresh_token_revoked_on_use?

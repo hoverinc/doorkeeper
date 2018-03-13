@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20170822064514) do
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id",     null: false
+    t.string   "resource_owner_type",     null: false
     t.integer  "application_id",        null: false
     t.string   "token",                 null: false
     t.integer  "expires_in",            null: false
@@ -32,6 +33,7 @@ ActiveRecord::Schema.define(version: 20170822064514) do
 
   create_table "oauth_access_tokens", force: :cascade do |t|
     t.integer  "resource_owner_id"
+    t.string  "resource_owner_type"
     t.integer  "application_id"
     t.string   "token",                               null: false
     t.string   "refresh_token"
@@ -43,7 +45,7 @@ ActiveRecord::Schema.define(version: 20170822064514) do
   end
 
   add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
+  add_index "oauth_access_tokens", ["resource_owner_id", "resource_owner_type"], name: "index_oauth_access_tokens_on_resource_owner"
   add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true
 
   create_table "oauth_applications", force: :cascade do |t|

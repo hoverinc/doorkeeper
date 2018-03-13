@@ -177,26 +177,26 @@ module Doorkeeper
       end
 
       it 'returns only application for a specific resource owner' do
-        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id + 1)
-        token = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id)
+        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id + 1, resource_owner_type: resource_owner.class.name)
+        token = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, resource_owner_type: resource_owner.class.name)
         expect(Application.authorized_for(resource_owner)).to eq([token.application])
       end
 
       it 'excludes revoked tokens' do
-        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, revoked_at: 2.days.ago)
+        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, resource_owner_type: resource_owner.class.name, revoked_at: 2.days.ago)
         expect(Application.authorized_for(resource_owner)).to be_empty
       end
 
       it 'returns all applications that have been authorized' do
-        token1 = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id)
-        token2 = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id)
+        token1 = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, resource_owner_type: resource_owner.class.name)
+        token2 = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, resource_owner_type: resource_owner.class.name)
         expect(Application.authorized_for(resource_owner)).to eq([token1.application, token2.application])
       end
 
       it 'returns only one application even if it has been authorized twice' do
         application = FactoryBot.create(:application)
-        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, application: application)
-        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, application: application)
+        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, resource_owner_type: resource_owner.class.name, application: application)
+        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, resource_owner_type: resource_owner.class.name, application: application)
         expect(Application.authorized_for(resource_owner)).to eq([application])
       end
     end

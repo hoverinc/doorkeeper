@@ -54,7 +54,7 @@ module Doorkeeper::OAuth
     end
 
     it 'creates token even when there is already one (default)' do
-      FactoryBot.create(:access_token, application_id: client.id, resource_owner_id: owner.id)
+      FactoryBot.create(:access_token, application_id: client.id, resource_owner_id: owner.id, resource_owner_type: owner.class.name)
       expect do
         subject.authorize
       end.to change { Doorkeeper::AccessToken.count }.by(1)
@@ -62,7 +62,7 @@ module Doorkeeper::OAuth
 
     it 'skips token creation if there is already one' do
       allow(Doorkeeper.configuration).to receive(:reuse_access_token).and_return(true)
-      FactoryBot.create(:access_token, application_id: client.id, resource_owner_id: owner.id)
+      FactoryBot.create(:access_token, application_id: client.id, resource_owner_id: owner.id, resource_owner_type: owner.class.name)
       expect do
         subject.authorize
       end.to_not change { Doorkeeper::AccessToken.count }

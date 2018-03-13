@@ -31,6 +31,7 @@ class CreateDoorkeeperTables < ActiveRecord::Migration
 
     create_table :oauth_access_tokens do |t|
       t.integer  :resource_owner_id
+      t.integer  :resource_owner_type
       t.references :application
 
       # If you use a custom token generator you may need to change this column
@@ -49,7 +50,7 @@ class CreateDoorkeeperTables < ActiveRecord::Migration
     end
 
     add_index :oauth_access_tokens, :token, unique: true
-    add_index :oauth_access_tokens, :resource_owner_id
+    add_index :oauth_access_tokens, [:resource_owner_id, :resource_owner_type], name: "index_oauth_access_token_on_resource_owner"
     add_index :oauth_access_tokens, :refresh_token, unique: true
     add_foreign_key(
       :oauth_access_tokens,

@@ -34,10 +34,10 @@ module Doorkeeper
         error.nil?
       end
 
-      def find_or_create_access_token(client, resource_owner_id, scopes, server)
+      def find_or_create_access_token(client, resource_owner, scopes, server)
         @access_token = AccessToken.find_or_create_for(
           client,
-          resource_owner_id,
+          resource_owner,
           scopes,
           Authorization::Token.access_token_expires_in(server, client, grant_type),
           server.refresh_token_enabled?

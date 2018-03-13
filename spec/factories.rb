@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :access_grant, class: Doorkeeper::AccessGrant do
     sequence(:resource_owner_id) { |n| n }
+    resource_owner_type 'User'
     application
     redirect_uri 'https://app.com/callback'
     expires_in 100
@@ -9,6 +10,7 @@ FactoryBot.define do
 
   factory :access_token, class: Doorkeeper::AccessToken do
     sequence(:resource_owner_id) { |n| n }
+    resource_owner_type 'User'
     application
     expires_in 2.hours
 

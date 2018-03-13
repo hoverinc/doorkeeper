@@ -16,6 +16,11 @@ describe Doorkeeper::AccessGrant do
       subject.resource_owner_id = nil
       expect(subject).not_to be_valid
     end
+    
+    it 'is invalid without resource_owner_type' do
+      subject.resource_owner_type = nil
+      expect(subject).not_to be_valid
+    end
 
     it 'is invalid without application_id' do
       subject.application_id = nil

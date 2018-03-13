@@ -75,7 +75,7 @@ module Doorkeeper::OAuth
       it 'creates a new token if scopes do not match' do
         allow(Doorkeeper.configuration).to receive(:reuse_access_token).and_return(true)
         FactoryBot.create(:access_token, application_id: pre_auth.client.id,
-                           resource_owner_id: owner.id, scopes: '')
+                           resource_owner_id: owner.id, resource_owner_type: owner.class.name, scopes: '')
         expect do
           subject.authorize
         end.to change { Doorkeeper::AccessToken.count }.by(1)
@@ -87,7 +87,7 @@ module Doorkeeper::OAuth
         allow(application.scopes).to receive(:all?).and_return(true)
 
         FactoryBot.create(:access_token, application_id: pre_auth.client.id,
-                           resource_owner_id: owner.id, scopes: 'public')
+                           resource_owner_id: owner.id, resource_owner_type: owner.class.name, scopes: 'public')
 
         expect { subject.authorize }.not_to change { Doorkeeper::AccessToken.count }
       end
